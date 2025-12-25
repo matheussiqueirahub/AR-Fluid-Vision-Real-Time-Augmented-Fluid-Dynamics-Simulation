@@ -194,8 +194,17 @@ class ObjectInteraction:
     def __init__(self):
         self.tracked_objects = []
         
-        # Simple object detector using color or contours
-        self.detector = cv2.SimpleBlobDetector_create()
+        # Configure blob detector for better object detection
+        params = cv2.SimpleBlobDetector_Params()
+        params.filterByArea = True
+        params.minArea = 100
+        params.maxArea = 10000
+        params.filterByCircularity = False
+        params.filterByConvexity = False
+        params.filterByInertia = False
+        
+        # Create detector with configured parameters
+        self.detector = cv2.SimpleBlobDetector_create(params)
     
     def detect_objects(self, frame: np.ndarray) -> List[Tuple[np.ndarray, float]]:
         """
